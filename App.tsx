@@ -128,12 +128,12 @@ const App: React.FC = () => {
             <div className="flex gap-4">
                 <button 
                   onClick={() => {
-                    const text = `I am classified as a Crypto ${result.category} on @VirginChecker! My soul is Rugged. Reveal yours: `;
+                    const text = `I am classified as ${result.category} on @VirginChecker! My soul is revealed. Check yours now: `;
                     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
                   }}
                   className="flex-[2] bg-white text-[#1A56FF] py-6 rounded-full font-black text-2xl uppercase italic shadow-xl hover:scale-105 transition-transform"
                 >
-                  FLEX ON X
+                  SHARE TO X
                 </button>
                 <button 
                   onClick={reset}
