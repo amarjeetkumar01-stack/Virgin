@@ -1,13 +1,58 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Logo, ArrowIcon } from './constants';
 import { MemeResult } from './types';
 import { analyzePersona } from './services/geminiService';
+
+const Ticker: React.FC = () => {
+  const [offset, setOffset] = useState(0);
+  const phrases = [
+    "LIQUIDATING MIDDLE CURVES...",
+    "GM TO VIRGINS ONLY...",
+    "WAGMI IS A SCAM...",
+    "CHECKING SOUL PROTOCOLS...",
+    "HODL YOUR DIGNITY...",
+    "SOCIAL AUDIT IN PROGRESS...",
+    "COPE LEVELS RISING...",
+    "EXIT LIQUIDITY DETECTED...",
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setOffset((prev) => (prev + 1) % 100);
+    }, 50);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="w-full bg-[#CBFF00] py-1 overflow-hidden whitespace-nowrap border-y border-black/10 z-50">
+      <div 
+        className="inline-block text-[10px] font-black uppercase text-black"
+        style={{ transform: `translateX(-${offset}%)` }}
+      >
+        {phrases.map((p, i) => (
+          <span key={i} className="mx-8">{p}</span>
+        ))}
+        {phrases.map((p, i) => (
+          <span key={`dup-${i}`} className="mx-8">{p}</span>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 const App: React.FC = () => {
   const [username, setUsername] = useState('');
   const [status, setStatus] = useState<'idle' | 'judging' | 'done' | 'error'>('idle');
   const [result, setResult] = useState<MemeResult | null>(null);
+  const [auditCount, setAuditCount] = useState(1248201);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setAuditCount(prev => prev + Math.floor(Math.random() * 3));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleCheck = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -15,7 +60,6 @@ const App: React.FC = () => {
 
     try {
       setStatus('judging');
-      // Suspense delay for "Audit" feel
       await new Promise(r => setTimeout(r, 2500));
       const memeResult = await analyzePersona(username);
       setResult(memeResult);
@@ -32,26 +76,36 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center selection:bg-[#CBFF00] selection:text-black bg-[#050a1f]">
-      {/* Header */}
-      <header className="w-full max-w-7xl px-4 sm:px-6 py-6 sm:py-10 flex justify-center items-center z-10">
+    <div className="min-h-screen flex flex-col items-center selection:bg-[#CBFF00] selection:text-black bg-[#050a1f] relative overflow-x-hidden">
+      <Ticker />
+      
+      {/* Visual Accents */}
+      <div className="absolute top-20 right-10 flex items-center gap-2 opacity-30 animate-pulse hidden md:flex">
+        <div className="w-3 h-3 bg-red-600 rounded-full shadow-[0_0_10px_red]"></div>
+        <span className="font-mono text-xs font-bold text-white uppercase tracking-widest">LIVE_AUDIT_MODE</span>
+      </div>
+
+      <header className="w-full max-w-7xl px-4 sm:px-6 py-8 flex justify-center items-center z-10">
         <Logo />
       </header>
 
-      <main className="flex-1 w-full max-w-4xl px-4 py-4 flex flex-col items-center text-center justify-center relative">
+      <main className="flex-1 w-full max-w-4xl px-4 py-4 flex flex-col items-center text-center justify-center relative z-10">
         
         {status === 'idle' && (
           <div className="flex flex-col items-center animate-in fade-in zoom-in duration-700 w-full">
-            <h1 className="text-4xl sm:text-6xl md:text-[8rem] font-black leading-[0.9] mb-6 uppercase tracking-tighter italic text-white">
+            <h1 className="text-4xl sm:text-6xl md:text-[7rem] font-black leading-[0.9] mb-4 uppercase tracking-tighter italic text-white">
               ARE YOU <br />
               <span className="text-[#CBFF00] text-neon">VIRGIN OR NOT?</span>
             </h1>
-            <p className="text-base sm:text-xl md:text-2xl font-bold opacity-40 mb-8 sm:mb-12 max-w-lg text-white">
-              Check you are Virgin or not CT parody
-            </p>
+            <div className="bg-white/5 border border-white/10 px-4 py-1 rounded-full mb-8 flex items-center gap-2">
+              <p className="text-xs sm:text-sm font-bold opacity-60 text-white uppercase tracking-widest">
+                Check you are Virgin or not CT parody
+              </p>
+              <div className="w-3 h-3 bg-[#CBFF00] rounded-full animate-pulse"></div>
+            </div>
 
             <form onSubmit={handleCheck} className="w-full max-w-xl relative flex flex-col sm:flex-row items-center gap-4 sm:gap-0 group">
-               <div className="hidden sm:flex absolute inset-y-0 left-0 pl-8 items-center pointer-events-none">
+              <div className="hidden sm:flex absolute inset-y-0 left-0 pl-8 items-center pointer-events-none">
                 <span className="text-xl md:text-3xl font-black text-[#CBFF00]">@</span>
               </div>
               <input 
@@ -59,15 +113,19 @@ const App: React.FC = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="username"
-                className="w-full bg-white/5 border-4 border-white/20 rounded-full py-4 sm:py-8 pl-6 sm:pl-16 pr-6 sm:pr-56 text-lg sm:text-2xl md:text-3xl font-black placeholder:text-white/10 focus:outline-none focus:border-[#CBFF00] transition-all text-white focus:bg-white/10"
+                className="w-full bg-white/5 border-4 border-white/10 rounded-xl sm:rounded-full py-4 sm:py-8 pl-6 sm:pl-16 pr-6 sm:pr-56 text-lg sm:text-2xl md:text-3xl font-black placeholder:text-white/10 focus:outline-none focus:border-[#CBFF00] transition-all text-white focus:bg-white/10"
               />
               <button 
                 type="submit"
-                className="sm:absolute sm:right-4 w-full sm:w-auto bg-[#CBFF00] text-black px-6 sm:px-10 py-4 sm:py-5 rounded-full font-black text-base sm:text-xl uppercase flex items-center justify-center gap-2 hover:bg-white transition-colors shadow-[0_0_30px_rgba(203,255,0,0.3)]"
+                className="sm:absolute sm:right-4 w-full sm:w-auto bg-[#CBFF00] text-black px-6 sm:px-10 py-4 sm:py-5 rounded-xl sm:rounded-full font-black text-base sm:text-xl uppercase flex items-center justify-center gap-2 hover:bg-white transition-colors shadow-[0_0_30px_rgba(203,255,0,0.3)] group"
               >
-                Reveal <ArrowIcon className="w-5 h-5 sm:w-8 sm:h-8" />
+                Reveal <ArrowIcon className="w-5 h-5 sm:w-8 sm:h-8 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </form>
+            
+            <div className="mt-12 opacity-20 font-mono text-[10px] uppercase tracking-[0.4em]">
+              {auditCount.toLocaleString()} SOULS AUDITED BY THE ORACLE
+            </div>
           </div>
         )}
 
@@ -122,7 +180,7 @@ const App: React.FC = () => {
             
             <div className="flex flex-col items-center px-4">
                 <p className="text-[10px] font-bold opacity-40 uppercase tracking-[0.4em] mb-2 sm:mb-4 text-[#CBFF00]">ARCHETYPE IDENTIFIED</p>
-                <h3 className="text-4xl sm:text-8xl md:text-9xl font-black text-white italic uppercase leading-none drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] break-words w-full">
+                <h3 className="text-4xl sm:text-7xl md:text-9xl font-black text-white italic uppercase leading-none drop-shadow-[0_0_30px_rgba(255,255,255,0.2)] break-words w-full hyphens-auto">
                     {result.category}
                 </h3>
             </div>
@@ -147,7 +205,7 @@ const App: React.FC = () => {
                     <Logo />
                 </div>
                 <p className="text-[8px] sm:text-[10px] font-black uppercase tracking-[0.4em] text-[#CBFF00] mb-2 sm:mb-4">THE FINAL VERDICT</p>
-                <p className="text-lg sm:text-4xl md:text-5xl font-black leading-tight italic text-white/90">
+                <p className="text-lg sm:text-3xl md:text-4xl font-black leading-tight italic text-white/90">
                     "{result.verdict}"
                 </p>
             </div>
@@ -158,13 +216,13 @@ const App: React.FC = () => {
                     const text = `I am classified as ${result.category} on @VirginChecker! My soul is revealed. Check yours now: `;
                     window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank');
                   }}
-                  className="flex-[2] bg-[#CBFF00] text-black py-4 sm:py-7 rounded-full font-black text-lg sm:text-2xl uppercase italic shadow-[0_0_30px_rgba(203,255,0,0.2)] hover:scale-105 transition-transform"
+                  className="flex-[2] bg-white text-black py-4 sm:py-7 rounded-full font-black text-lg sm:text-2xl uppercase italic shadow-2xl hover:bg-[#CBFF00] transition-colors"
                 >
-                  SHAME ON X
+                  Post on X
                 </button>
                 <button 
                   onClick={reset}
-                  className="flex-1 border-2 border-white/20 bg-white/5 py-4 sm:py-7 rounded-full font-black text-lg sm:text-2xl uppercase italic hover:bg-white hover:text-black transition-all hover:scale-105 shadow-xl text-white"
+                  className="flex-1 border-2 border-white/20 bg-white/5 py-4 sm:py-7 rounded-full font-black text-lg sm:text-2xl uppercase italic hover:bg-white hover:text-black transition-all shadow-xl text-white"
                 >
                   RE-ROLL
                 </button>
@@ -173,8 +231,13 @@ const App: React.FC = () => {
         )}
       </main>
 
-      <footer className="w-full max-w-7xl px-4 py-8 sm:py-12 flex flex-col items-center text-white/20 text-[7px] sm:text-[10px] font-black tracking-[0.3em] sm:tracking-[0.5em] uppercase text-center border-t border-white/5 mt-10">
+      <footer className="w-full max-w-7xl px-4 py-8 sm:py-12 flex flex-col items-center text-white/20 text-[7px] sm:text-[10px] font-black tracking-[0.3em] sm:tracking-[0.5em] uppercase text-center border-t border-white/5 mt-10 relative z-10">
         <p>© 2026 VIRGINCHECKER // CRYPTO DYSTOPIA PROTOCOL // PARODY ONLY</p>
+        <div className="mt-4 flex gap-4 opacity-50">
+          <span>TOS</span>
+          <span>PRIVACY_VOID</span>
+          <span>LIQUIDATE_SOUL</span>
+        </div>
       </footer>
 
       <style>{`

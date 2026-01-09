@@ -2,7 +2,7 @@
 import React from 'react';
 
 export const COLORS = {
-  primary: '#0047FF',
+  primary: '#050a1f',
   accent: '#CBFF00',
   white: '#FFFFFF',
 };
@@ -14,11 +14,11 @@ export const ArrowIcon = ({ className }: { className?: string }) => (
 );
 
 export const Logo = () => (
-  <div className="flex items-center gap-2">
-    <div className="bg-white text-[#0047FF] font-black px-3 py-1 rounded-full text-xl italic">
+  <div className="flex items-center gap-2 group cursor-default">
+    <div className="bg-[#CBFF00] text-[#050a1f] font-black px-3 py-1 rounded-sm text-xl italic skew-x-[-12deg] group-hover:skew-x-[12deg] transition-transform duration-300">
       VIRGIN
     </div>
-    <div className="border-2 border-white px-3 py-1 rounded-full text-white font-bold text-xl uppercase tracking-tighter">
+    <div className="border-2 border-[#CBFF00] px-3 py-1 rounded-sm text-[#CBFF00] font-bold text-xl uppercase tracking-tighter skew-x-[-12deg] group-hover:skew-x-[12deg] transition-transform duration-300">
       CHECKER
     </div>
   </div>
