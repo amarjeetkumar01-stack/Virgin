@@ -6,20 +6,24 @@ const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 export async function analyzePersona(username: string): Promise<MemeResult> {
   const prompt = `
-    You are a dark, cynical, crypto-degenerate meme generator for "VirginChecker".
-    Classify the persona "@${username}" into ONLY ONE of these categories: 'VIRGIN', 'NON-VIRGIN', or 'TRANSGENDER'.
+    You are the "VirginChecker" Oracle, a satirical AI that audits Twitter/X souls based on their username: "@${username}".
+    Your goal is to categorize them into one of three distinct internet archetypes:
     
-    Rules for output:
-    1. Language: 
-       - 'roast': Exactly ONE short, brutal, hilarious line in ENGLISH focused on CRYPTO CULTURE, WEB3, and DEGEN habits. Use slang like 'Rugged', 'Down bad', 'Paper hands', 'Exit liquidity', 'Gas fees', 'Faded'.
-       - 'verdict': Exactly ONE short, sharp, sarcastic final verdict in ENGLISH (e.g., "Your portfolio is a graveyard").
-    2. Tone: Dystopian, dark internet humor, crypto-native sarcasm. No hate, no slurs.
-    3. STRICT: No numbers, no percentages, no stats, no mention of data.
+    1. VIRGIN: The lurker, the anime pfp who never tweets, the paper hands who buys at the top, the "is this a scam?" asker, the one with 0 followers but 10k following.
+    2. NON-VIRGIN: The early adopter, the high-conviction whale, the builder, the one who actually reads the whitepaper, the "absolute chad" of the timeline.
+    3. TRANSGENDER: The glitch-core experimenter, the one who identifies as a smart contract, the multi-chain bridge-jumper, the avant-garde digital artist who exists in 4 dimensions.
+
+    Rules for your roast:
+    - Tone: High-octane, cynical, crypto-native, 4chan/X-tier sarcasm.
+    - Style: Use brutal Web3 slang (Exit liquidity, Faded, Rugged, GM/GN, Cope, Seethe, Mid-curve).
+    - Length: Short and punchy. ONE roast line, ONE verdict line.
+    
+    CRITICAL: Be objective based on the "vibe" of the username. Do not default to VIRGIN. Distribute your judgments fairly based on the energy of the handle.
     
     Output JSON:
-    - category: The classification string ('VIRGIN', 'NON-VIRGIN', or 'TRANSGENDER').
-    - roast: The English crypto roast line.
-    - verdict: The English final verdict.
+    - category: EXACTLY one of ['VIRGIN', 'NON-VIRGIN', 'TRANSGENDER'].
+    - roast: A brutal crypto-themed roast.
+    - verdict: A sharp, sarcastic final verdict.
   `;
 
   try {
@@ -27,11 +31,15 @@ export async function analyzePersona(username: string): Promise<MemeResult> {
       model: "gemini-3-flash-preview",
       contents: prompt,
       config: {
+        temperature: 0.9, // Higher temperature for more variety
         responseMimeType: "application/json",
         responseSchema: {
           type: Type.OBJECT,
           properties: {
-            category: { type: Type.STRING },
+            category: { 
+              type: Type.STRING,
+              description: "Must be VIRGIN, NON-VIRGIN, or TRANSGENDER"
+            },
             roast: { type: Type.STRING },
             verdict: { type: Type.STRING }
           },
@@ -42,23 +50,32 @@ export async function analyzePersona(username: string): Promise<MemeResult> {
 
     const result = JSON.parse(response.text || "{}");
     
-    const categoryUpper = result.category?.toUpperCase() || 'VIRGIN';
+    const categoryRaw = (result.category || '').toUpperCase().trim();
     let finalCategory: Classification = 'VIRGIN';
-    if (categoryUpper === 'NON-VIRGIN') finalCategory = 'NON-VIRGIN';
-    else if (categoryUpper === 'TRANSGENDER') finalCategory = 'TRANSGENDER';
+    
+    if (categoryRaw.includes('NON-VIRGIN')) {
+      finalCategory = 'NON-VIRGIN';
+    } else if (categoryRaw.includes('TRANSGENDER')) {
+      finalCategory = 'TRANSGENDER';
+    } else {
+      finalCategory = 'VIRGIN';
+    }
 
     const memeImages = {
       VIRGIN: [
         "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&h=400&auto=format&fit=crop", // Retro PC mess
-        "https://images.unsplash.com/photo-1590483734724-3881744a3030?q=80&w=600&h=400&auto=format&fit=crop"  // Dark silhouette
+        "https://images.unsplash.com/photo-1590483734724-3881744a3030?q=80&w=600&h=400&auto=format&fit=crop", // Dark silhouette
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&h=400&auto=format&fit=crop"  // Code matrix
       ],
       "NON-VIRGIN": [
         "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&h=400&auto=format&fit=crop", // Golden Bitcoin abstract
-        "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=600&h=400&auto=format&fit=crop"  // Blockchain abstract
+        "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=600&h=400&auto=format&fit=crop", // Blockchain abstract
+        "https://images.unsplash.com/photo-1640344776474-9e8ff0c378c2?q=80&w=600&h=400&auto=format&fit=crop"  // Cyber gold
       ],
       TRANSGENDER: [
         "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&h=400&auto=format&fit=crop", // Glitch art
-        "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&h=400&auto=format&fit=crop"  // Cyberpunk red/blue
+        "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&h=400&auto=format&fit=crop", // Cyberpunk red/blue
+        "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=600&h=400&auto=format&fit=crop"  // Abstract digital distortion
       ]
     };
     
@@ -67,16 +84,16 @@ export async function analyzePersona(username: string): Promise<MemeResult> {
 
     return {
       category: finalCategory,
-      roast: result.roast || "You look like you're still waiting for a 2021 rug to moon.",
-      verdict: result.verdict || "Certified exit liquidity.",
+      roast: result.roast || "The blockchain couldn't even find a heartbeat in your portfolio.",
+      verdict: result.verdict || "Standard-issue exit liquidity.",
       memeUrl
     };
   } catch (error) {
     console.error("Gemini Error:", error);
     return {
       category: 'VIRGIN',
-      roast: "The blockchain rejected your cringe attempt at relevance.",
-      verdict: "Liquidated on arrival.",
+      roast: "The server crashed trying to process such low-level energy.",
+      verdict: "Liquidated instantly.",
       memeUrl: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=600&h=400&auto=format&fit=crop"
     };
   }
