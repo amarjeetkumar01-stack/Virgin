@@ -47,7 +47,7 @@ const App: React.FC = () => {
               <span className="text-[#CBFF00] text-neon">VIRGIN OR NOT?</span>
             </h1>
             <p className="text-base sm:text-xl md:text-2xl font-bold opacity-40 mb-8 sm:mb-12 max-w-lg text-white">
-              THE PREMIER ON-CHAIN SOUL AUDITOR. <br/>REVEAL YOUR TRUE PROTOCOL STATUS.
+              Check you are Virgin or not CT parody
             </p>
 
             <form onSubmit={handleCheck} className="w-full max-w-xl relative flex flex-col sm:flex-row items-center gap-4 sm:gap-0 group">
@@ -127,16 +127,16 @@ const App: React.FC = () => {
                 </h3>
             </div>
 
-            <div className="glass-card rounded-[1.5rem] sm:rounded-[3rem] p-1 overflow-hidden shadow-2xl relative group cursor-pointer transition-all duration-500 hover:-translate-y-2 sm:hover:-translate-y-4 hover:shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8)] border-white/20">
-                <div className="crt-overlay opacity-40 group-hover:opacity-10"></div>
+            <div className="glass-card rounded-[1.5rem] sm:rounded-[3rem] p-1 overflow-hidden shadow-2xl relative group cursor-pointer transition-all duration-500 hover:-translate-y-2 sm:hover:-translate-y-4 hover:scale-[1.02] hover:shadow-[0_40px_100px_-15px_rgba(0,0,0,0.8)] border-white/20">
+                <div className="crt-overlay opacity-40 group-hover:opacity-10 transition-opacity duration-500"></div>
                 <div className="vignette absolute inset-0 z-10 pointer-events-none opacity-80"></div>
                 <img 
                   src={result.memeUrl} 
                   alt="Meme" 
-                  className="w-full h-64 sm:h-[28rem] object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-1000 ease-out grayscale group-hover:grayscale-0 brightness-75 group-hover:brightness-100" 
+                  className="w-full h-64 sm:h-[28rem] object-cover opacity-60 group-hover:opacity-90 group-hover:scale-105 transition-all duration-500 ease-out grayscale group-hover:grayscale-0 brightness-75 group-hover:brightness-100" 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent flex items-end p-6 sm:p-12 text-left pointer-events-none z-20">
-                    <p className="text-lg sm:text-4xl font-black italic leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,1)] transform transition-transform duration-700 group-hover:translate-y-[-10px]">
+                    <p className="text-lg sm:text-4xl font-black italic leading-tight text-white drop-shadow-[0_2px_10px_rgba(0,0,0,1)] transform transition-transform duration-500 group-hover:translate-y-[-10px]">
                         {result.roast}
                     </p>
                 </div>

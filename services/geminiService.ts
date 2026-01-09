@@ -65,17 +65,26 @@ export async function analyzePersona(username: string): Promise<MemeResult> {
       VIRGIN: [
         "https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=600&h=400&auto=format&fit=crop", // Retro PC mess
         "https://images.unsplash.com/photo-1590483734724-3881744a3030?q=80&w=600&h=400&auto=format&fit=crop", // Dark silhouette
-        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&h=400&auto=format&fit=crop"  // Code matrix
+        "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=600&h=400&auto=format&fit=crop", // Code matrix
+        "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&h=400&auto=format&fit=crop", // Green circuit dark
+        "https://images.unsplash.com/photo-1510511459019-5dee667ff88b?q=80&w=600&h=400&auto=format&fit=crop", // Dark terminal
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?q=80&w=600&h=400&auto=format&fit=crop"  // Dark gaming setup
       ],
       "NON-VIRGIN": [
         "https://images.unsplash.com/photo-1621416894569-0f39ed31d247?q=80&w=600&h=400&auto=format&fit=crop", // Golden Bitcoin abstract
         "https://images.unsplash.com/photo-1639322537228-f710d846310a?q=80&w=600&h=400&auto=format&fit=crop", // Blockchain abstract
-        "https://images.unsplash.com/photo-1640344776474-9e8ff0c378c2?q=80&w=600&h=400&auto=format&fit=crop"  // Cyber gold
+        "https://images.unsplash.com/photo-1640344776474-9e8ff0c378c2?q=80&w=600&h=400&auto=format&fit=crop", // Cyber gold
+        "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&h=400&auto=format&fit=crop", // Cyberpunk neon street
+        "https://images.unsplash.com/photo-1614728263952-84ea206f25b1?q=80&w=600&h=400&auto=format&fit=crop", // Rocket launch energy
+        "https://images.unsplash.com/photo-1634154830167-a88596acc996?q=80&w=600&h=400&auto=format&fit=crop"  // Abstract golden network
       ],
       TRANSGENDER: [
         "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&h=400&auto=format&fit=crop", // Glitch art
         "https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=600&h=400&auto=format&fit=crop", // Cyberpunk red/blue
-        "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=600&h=400&auto=format&fit=crop"  // Abstract digital distortion
+        "https://images.unsplash.com/photo-1633167606207-d840b5070fc2?q=80&w=600&h=400&auto=format&fit=crop", // Abstract digital distortion
+        "https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=600&h=400&auto=format&fit=crop", // Intense abstract gradient
+        "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?q=80&w=600&h=400&auto=format&fit=crop", // Abstract neural network
+        "https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=600&h=400&auto=format&fit=crop"  // Liquid metal glitch
       ]
     };
     
